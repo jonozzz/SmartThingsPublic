@@ -6,6 +6,7 @@
  */
 
 // Automatically generated. Make future change here.
+// test
 definition(
     name: "Thermostat Auto Off",
     namespace: "dianoga",
