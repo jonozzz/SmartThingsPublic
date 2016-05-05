@@ -47,8 +47,10 @@ def configure() {
             actions.sort()
             section("Actions") {
                 log.trace actions
+                input "onMode", "mode", title: "select a mode(s)", multiple: true, required: false
+                input "offMode", "mode", title: "select a mode(s)", multiple: true, required: false
                 input "onAction", "enum", title: "When to turn on the fan?", options: actions, multiple: true, required: true
-                input "offAction", "enum", title: "When to turn off the fan?", options: actions, required: false
+                input "offAction", "enum", title: "When to turn off the fan?", options: actions, multiple: true, required: false
             }
         }
     }
@@ -67,6 +69,7 @@ def updated() {
 
 def initialize() {
     subscribe(location, "routineExecuted", routineChanged)
+    subscribe(location, "mode", modeChangeHandler)
     log.debug "selected on action $onAction"
     log.debug "selected off action $offAction"
 }
@@ -87,6 +90,19 @@ def routineChanged(evt) {
     log.debug "evt value: ${evt.value}"
     log.debug "evt displayName: ${evt.displayName}"
     log.debug "evt descriptionText: ${evt.descriptionText}"*/
+}
+
+def modeChangeHandler(evt) {
+    log.debug "mode changed to ${evt.value}"
+	if (onMode && onMode.contains(evt.value)) {
+    	thermoTurnOn()
+        thermoShutOffTrigger()
+    }
+
+	if (offMode && offMode.contains(evt.value)) {
+    	thermoShutOff()
+    }
+
 }
 
 def thermoShutOffTrigger() {
@@ -110,6 +126,6 @@ def thermoTurnOn() {
 
 def thermoShutOff() {
     //log.warn "turning off the fan"
-    sendNotificationEvent("The fan is turned off.")
+    sendNotificationEvent("The fan is turning off.")
 	thermostats?.setThermostatFanMode("fanAuto")
 }
