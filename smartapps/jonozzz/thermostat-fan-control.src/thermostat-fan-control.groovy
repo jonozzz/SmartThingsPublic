@@ -121,11 +121,18 @@ def thermoShutOffTrigger() {
 
 def thermoTurnOn() {
     //log.warn "turning on the fan"
-    thermostats?.setThermostatFanMode("fanOn")
+    //sendNotificationEvent("The fan is turning on.")
+    thermostats?.setThermostatFanMode("on")
+    //thermostats?.setFanMode("on")
+    //thermostats?.thermostatFanMode("on")
+    //thermostats?.fanOn()
 }
 
 def thermoShutOff() {
     //log.warn "turning off the fan"
     sendNotificationEvent("The fan is turning off.")
-	thermostats?.setThermostatFanMode("fanAuto")
+	thermostats?.setThermostatFanMode("auto")
+    //thermostats?.setFanMode("auto")
+    //thermostats?.thermostatFanMode("auto")
+    //thermostats?.fanAuto()
 }
